@@ -1,0 +1,509 @@
+/* Global Styles */
+:root {
+    --primary-bg: #1a1d21;
+    --secondary-bg: #242830;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --accent-color: #3498db;
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    --gradient-overlay: linear-gradient(180deg, rgba(26, 29, 33, 0) 0%, rgba(26, 29, 33, 0.8) 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: var(--primary-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* App Container */
+.app-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    background: var(--secondary-bg);
+    padding: 1.5rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo h1 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, var(--accent-color), var(--success-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.status-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.status-info {
+    margin-top: 1rem;
+}
+
+.status-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.status-meter {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin-top: 0.5rem;
+}
+
+.meter-fill {
+    height: 100%;
+    width: 70%;
+    background: var(--accent-color);
+    border-radius: 2px;
+}
+
+/* Main Content */
+.main-content {
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+/* Weather Main */
+.weather-main {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 20px;
+    background: var(--secondary-bg);
+    position: relative;
+}
+
+.temperature-display {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.high-low {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.weather-description-large {
+    font-size: 2rem;
+    margin: 0.5rem 0;
+}
+
+/* Forecast Container */
+.forecast-container {
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.forecast-scroll {
+    overflow-x: auto;
+    padding: 0.5rem 0;
+}
+
+.forecast-cards {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Info Cards */
+.info-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.info-card {
+    background: var(--secondary-bg);
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: var(--card-shadow);
+}
+
+/* Music Player Card */
+.music-card {
+    background: linear-gradient(135deg, var(--secondary-bg), rgba(52, 152, 219, 0.2));
+}
+
+.music-player {
+    margin-top: 1rem;
+}
+
+.song-info {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.song-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.artist-name {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.player-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1rem 0;
+}
+
+.player-controls button {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.player-controls button:hover {
+    color: var(--accent-color);
+}
+
+.progress-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: var(--accent-color);
+    transition: width 0.1s linear;
+}
+
+/* Recipe Card */
+.recipe-card {
+    background: linear-gradient(135deg, var(--secondary-bg), rgba(46, 204, 113, 0.2));
+}
+
+.recipe-preview {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.recipe-image {
+    width: 80px;
+    height: 80px;
+    background: var(--card-bg);
+    border-radius: 10px;
+}
+
+.recipe-info h4 {
+    margin-bottom: 0.5rem;
+}
+
+.recipe-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Weather Details Card */
+.weather-details-card {
+    background: linear-gradient(135deg, var(--secondary-bg), rgba(155, 89, 182, 0.2));
+}
+
+.weather-details {
+    margin-top: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--text-secondary);
+}
+
+/* Location */
+.current-location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+}
+
+.current-location i {
+    color: var(--accent-color);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.weather-main,
+.info-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Theme Switcher */
+.theme-switcher {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    background: var(--card-bg);
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.theme-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.theme-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-btn.active {
+    color: var(--accent-color);
+    background: rgba(52, 152, 219, 0.1);
+}
+
+/* Weather Animation */
+.weather-animation {
+    height: 120px;
+    margin-bottom: 1rem;
+    border-radius: 15px;
+    overflow: hidden;
+    background: var(--card-bg);
+}
+
+#weatherCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Search Bar */
+.search-container {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: var(--secondary-bg);
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+}
+
+.search-bar i {
+    color: var(--text-secondary);
+    margin-right: 1rem;
+}
+
+.location-search {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1rem;
+    outline: none;
+}
+
+.location-search::placeholder {
+    color: var(--text-secondary);
+}
+
+.search-btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.search-btn:hover {
+    background: #2980b9;
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    margin-top: 0.5rem;
+    box-shadow: var(--card-shadow);
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.search-suggestions.active {
+    display: block;
+}
+
+.suggestion-item {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.suggestion-item:hover {
+    background: var(--card-bg);
+}
+
+/* Refresh Button */
+.refresh-weather {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.refresh-btn {
+    background: var(--card-bg);
+    border: none;
+    color: var(--text-secondary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.refresh-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.refresh-btn i {
+    font-size: 1rem;
+}
+
+.refresh-btn.loading i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Interactive Cards */
+.info-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.info-card:hover::before {
+    transform: translateX(100%);
+}
+
+/* Forecast Card Interactivity */
+.forecast-card {
+    background: var(--secondary-bg);
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.forecast-card:hover {
+    transform: scale(1.05);
+    background: var(--card-bg);
+}
+
+.forecast-day {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.forecast-temp {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+/* Music Player Enhancements */
+.player-controls button {
+    position: relative;
+    overflow: hidden;
+}
+
+.player-controls button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.player-controls button:active::after {
+    width: 100px;
+    height: 100px;
+} 

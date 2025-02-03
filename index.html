@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherWise</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>WeatherWise</h1>
+            </div>
+            <!-- Theme Switcher -->
+            <div class="theme-switcher">
+                <button class="theme-btn light-theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="theme-btn dark-theme active">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="theme-btn auto-theme">
+                    <i class="fas fa-magic"></i>
+                </button>
+            </div>
+            <!-- Weather Animation Container -->
+            <div class="weather-animation">
+                <canvas id="weatherCanvas"></canvas>
+            </div>
+            <div class="status-card">
+                <h3>Status</h3>
+                <div class="status-info">
+                    <span class="status-label">Air Quality</span>
+                    <div class="status-meter">
+                        <div class="meter-fill"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="location-selector">
+                <div class="current-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="location"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Interactive Search Bar -->
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search location..." class="location-search">
+                    <button class="search-btn">Search</button>
+                </div>
+                <div class="search-suggestions"></div>
+            </div>
+            
+            <!-- Weather Section with Interactive Elements -->
+            <div class="weather-main">
+                <div class="refresh-weather">
+                    <button class="refresh-btn" title="Refresh Weather">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div class="temperature-display">
+                    <span class="temperature"></span>
+                    <div class="high-low">
+                        <span class="high">H: <span class="high-temp">--°</span></span>
+                        <span class="low">L: <span class="low-temp">--°</span></span>
+                    </div>
+                </div>
+                <div class="weather-description-large"></div>
+                <div class="weather-icon-large"></div>
+            </div>
+
+            <!-- Forecast Cards -->
+            <div class="forecast-container">
+                <div class="forecast-scroll">
+                    <div class="forecast-cards">
+                        <!-- Forecast cards will be added by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Info Cards -->
+            <div class="info-cards-container">
+                <!-- Music Player Card -->
+                <div class="info-card music-card">
+                    <h3>Weather-Based Music</h3>
+                    <div class="music-player">
+                        <div class="song-info">
+                            <p class="song-title">No song playing</p>
+                            <p class="artist-name"></p>
+                        </div>
+                        <div class="player-controls">
+                            <button class="prev-btn"><i class="fas fa-backward"></i></button>
+                            <button class="play-btn"><i class="fas fa-play"></i></button>
+                            <button class="next-btn"><i class="fas fa-forward"></i></button>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recipe Card -->
+                <div class="info-card recipe-card">
+                    <h3>Weather-Based Recipe</h3>
+                    <div class="recipe-container">
+                        <div class="recipe-preview">
+                            <div class="recipe-image"></div>
+                            <div class="recipe-info">
+                                <h4 class="recipe-title">Loading recipes...</h4>
+                                <p class="recipe-description">Perfect for today's weather</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Weather Info Card -->
+                <div class="info-card weather-details-card">
+                    <h3>Weather Details</h3>
+                    <div class="weather-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Humidity</span>
+                            <span class="humidity-value">--%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Wind Speed</span>
+                            <span class="wind-value">-- km/h</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Pressure</span>
+                            <span class="pressure-value">-- hPa</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/weather.js"></script>
+    <script src="js/music.js"></script>
+    <script src="js/recipes.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 

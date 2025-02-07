@@ -40,6 +40,21 @@
                     </div>
                 </div>
             </div>
+            <!-- Weather Details in Sidebar -->
+            <div class="weather-details-sidebar">
+                <div class="detail-item">
+                    <span class="detail-label">Humidity</span>
+                    <span class="humidity-value">--%</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Wind Speed</span>
+                    <span class="wind-value">-- km/h</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Pressure</span>
+                    <span class="pressure-value">-- hPa</span>
+                </div>
+            </div>
             <div class="location-selector">
                 <div class="current-location">
                     <i class="fas fa-map-marker-alt"></i>
@@ -122,21 +137,21 @@
                     </div>
                 </div>
 
-                <!-- Additional Weather Info Card -->
-                <div class="info-card weather-details-card">
-                    <h3>Weather Details</h3>
-                    <div class="weather-details">
-                        <div class="detail-item">
-                            <span class="detail-label">Humidity</span>
-                            <span class="humidity-value">--%</span>
+                <!-- Movie Recommendations Card (replacing weather details card) -->
+                <div class="info-card movie-card">
+                    <h3>Weather-Based Movies</h3>
+                    <div class="movie-container">
+                        <div class="movie-preview">
+                            <div class="movie-image"></div>
+                            <div class="movie-info">
+                                <h4 class="movie-title">Loading movies...</h4>
+                                <p class="movie-description">Perfect movies for this weather</p>
+                            </div>
                         </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Wind Speed</span>
-                            <span class="wind-value">-- km/h</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Pressure</span>
-                            <span class="pressure-value">-- hPa</span>
+                        <div class="movie-suggestions">
+                            <div class="suggestion-list">
+                                <!-- Movie suggestions will be added here by JavaScript -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -148,6 +163,7 @@
     <script src="js/weather.js"></script>
     <script src="js/music.js"></script>
     <script src="js/recipes.js"></script>
+    <script src="js/movies.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/app.js"></script>
 </body>

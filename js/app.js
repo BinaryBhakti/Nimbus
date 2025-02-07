@@ -59,6 +59,9 @@ class WeatherMusicApp {
             const recipes = recipeService.getRecipesByWeather(weather.weatherMain, weather.temperature);
             this.updateRecipeSection(recipes);
 
+            // Update movie recommendations
+            movieService.updateMovieDisplay(weather.weatherMain);
+
             // Update forecast cards
             this.updateForecast(weather.forecast);
 

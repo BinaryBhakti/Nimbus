@@ -1,6 +1,6 @@
 class WeatherService {
     constructor() {
-        this.apiKey = '0730e0845f0a4947a8d214649250302';
+        this.apiKey = '54135f4d465c4e4fa62125912250702';
         this.baseUrl = 'https://api.weatherapi.com/v1';
     }
 
@@ -17,6 +17,8 @@ class WeatherService {
             }
 
             const data = await response.json();
+            const timeOfDay = data.current.is_day ? 'day' : 'night';
+            const weatherMood = this.getWeatherMood(data.current.condition.text, timeOfDay);
 
             return {
                 temperature: Math.round(data.current.temp_c),
@@ -25,11 +27,13 @@ class WeatherService {
                 description: data.current.condition.text,
                 icon: data.current.condition.icon,
                 location: `${data.location.name}, ${data.location.country}`,
-                weatherMain: this.getWeatherMain(data.current.condition.code),
+                weatherMain: data.current.condition.text,
                 humidity: data.current.humidity,
                 wind_speed: data.current.wind_kph,
                 pressure: data.current.pressure_mb,
-                forecast: this.processForecastData(data.forecast.forecastday)
+                forecast: this.processForecastData(data.forecast.forecastday),
+                mood: weatherMood,
+                timeOfDay: timeOfDay
             };
         } catch (error) {
             console.error('Error fetching weather:', error);
@@ -78,19 +82,43 @@ class WeatherService {
         });
     }
 
-    getWeatherMood(weatherMain) {
+    getWeatherMood(weatherMain, timeOfDay) {
+        // Map weather conditions to moods
         const weatherMoods = {
-            'Clear': 'happy',
-            'Clouds': 'calm',
-            'Rain': 'melancholic',
-            'Snow': 'peaceful',
+            'Clear': timeOfDay === 'day' ? 'blissful' : 'dreamy',
+            'Sunny': 'blissful',
+            'Partly cloudy': 'calm',
+            'Cloudy': 'melancholic',
+            'Overcast': 'melancholic',
+            'Mist': 'calm',
+            'Fog': 'melancholic',
+            'Light rain': 'calm',
+            'Moderate rain': 'melancholic',
+            'Heavy rain': 'intense',
+            'Thunder': 'intense',
             'Thunderstorm': 'intense',
-            'Drizzle': 'relaxed',
-            'Mist': 'mysterious',
-            'Fog': 'mysterious'
+            'Snow': 'dreamy',
+            'Light snow': 'calm',
+            'Heavy snow': 'intense',
+            'Sleet': 'melancholic',
+            'Light drizzle': 'calm',
+            'Patchy rain': 'calm'
         };
 
-        return weatherMoods[weatherMain] || 'calm';
+        // Try to find an exact match first
+        if (weatherMoods[weatherMain]) {
+            return weatherMoods[weatherMain];
+        }
+
+        // If no exact match, try to find a partial match
+        for (const [condition, mood] of Object.entries(weatherMoods)) {
+            if (weatherMain.toLowerCase().includes(condition.toLowerCase())) {
+                return mood;
+            }
+        }
+
+        // Default mood if no match is found
+        return 'calm';
     }
 }
 

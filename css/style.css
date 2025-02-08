@@ -146,6 +146,9 @@ body {
 }
 
 .music-player {
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 12px;
     margin-top: 1rem;
 }
 
@@ -154,37 +157,26 @@ body {
     margin-bottom: 1rem;
 }
 
-.song-title {
-    font-weight: bold;
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
     margin-bottom: 0.5rem;
 }
 
-.artist-name {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
-
-.player-controls {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin: 1rem 0;
-}
-
-.player-controls button {
-    background: none;
-    border: none;
-    color: var(--text-primary);
-    font-size: 1.2rem;
+.progress-container {
+    position: relative;
+    height: 20px;
     cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.player-controls button:hover {
-    color: var(--accent-color);
+    margin-bottom: 1rem;
 }
 
 .progress-bar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
     height: 4px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 2px;
@@ -192,9 +184,65 @@ body {
 }
 
 .progress {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     background: var(--accent-color);
     transition: width 0.1s linear;
+}
+
+.progress-handle {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.progress-handle:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+.player-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.player-controls button {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.player-controls button:hover {
+    background: var(--card-bg);
+    transform: scale(1.1);
+}
+
+.player-controls .play-btn {
+    font-size: 1.4rem;
+}
+
+/* Active states */
+.player-controls button:active {
+    transform: scale(0.95);
+}
+
+.progress-container:active .progress-handle {
+    transform: translate(-50%, -50%) scale(1.3);
 }
 
 /* Recipe Card */
@@ -482,54 +530,6 @@ body {
 .forecast-temp {
     font-size: 1.2rem;
     margin-top: 0.5rem;
-}
-
-/* Music Player Enhancements */
-.player-controls button {
-    position: relative;
-    overflow: hidden;
-}
-
-.player-controls button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease;
-}
-
-.player-controls button:active::after {
-    width: 100px;
-    height: 100px;
-}
-
-/* Weather Details in Sidebar */
-.weather-details-sidebar {
-    background: var(--card-bg);
-    border-radius: 15px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-.weather-details-sidebar .detail-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.weather-details-sidebar .detail-item:last-child {
-    border-bottom: none;
-}
-
-.weather-details-sidebar .detail-label {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
 }
 
 /* Movie Card */

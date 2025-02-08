@@ -51,16 +51,17 @@ class WeatherMusicApp {
             this.weatherElements.windSpeed.textContent = `${Math.round(weather.wind_speed)} km/h`;
             this.weatherElements.pressure.textContent = `${weather.pressure} hPa`;
 
-            // Update music based on weather
-            const mood = weatherService.getWeatherMood(weather.weatherMain);
-            musicPlayer.setMood(mood);
+            // Update music based on weather mood
+            const mood = weather.mood || 'calm'; // Default to calm if no mood
+            console.log('Setting music mood based on weather:', mood);
+            await musicPlayer.setMood(mood);
 
             // Update recipe suggestions
-            const recipes = recipeService.getRecipesByWeather(weather.weatherMain, weather.temperature);
+            const recipes = await recipeService.getRecipesByWeather(weather.weatherMain, weather.temperature);
             this.updateRecipeSection(recipes);
 
             // Update movie recommendations
-            movieService.updateMovieDisplay(weather.weatherMain);
+            await movieService.updateMovieDisplay(weather.weatherMain);
 
             // Update forecast cards
             this.updateForecast(weather.forecast);

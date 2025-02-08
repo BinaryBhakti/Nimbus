@@ -56,9 +56,9 @@ class WeatherMusicApp {
             console.log('Setting music mood based on weather:', mood);
             await musicPlayer.setMood(mood);
 
-            // Update recipe suggestions
+            // Update recipe suggestions with proper display update
             const recipes = await recipeService.getRecipesByWeather(weather.weatherMain, weather.temperature);
-            this.updateRecipeSection(recipes);
+            recipeService.updateRecipeDisplay(recipes);  // Make sure to call updateRecipeDisplay
 
             // Update movie recommendations
             await movieService.updateMovieDisplay(weather.weatherMain);

@@ -1,6 +1,8 @@
+import config from './config.js';
+
 class WeatherService {
     constructor() {
-        this.apiKey = '54135f4d465c4e4fa62125912250702';
+        this.apiKey = config.weatherApiKey;
         this.baseUrl = 'https://api.weatherapi.com/v1';
     }
 

@@ -41,11 +41,28 @@ body {
 }
 
 .logo h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin-bottom: 2rem;
-    background: linear-gradient(45deg, var(--accent-color), var(--success-color));
+    background: linear-gradient(45deg, #FF8008, #FFA751);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.logo h1::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #FFA751, transparent);
+    opacity: 0.5;
 }
 
 .status-card {

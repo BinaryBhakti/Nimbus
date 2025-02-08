@@ -1,6 +1,8 @@
+import config from './config.js';
+
 class MovieService {
     constructor() {
-        this.apiKey = '7024146f';
+        this.apiKey = config.movieApiKey;
         this.baseUrl = 'http://www.omdbapi.com/';
         this.weatherMovies = {
             blissful: {

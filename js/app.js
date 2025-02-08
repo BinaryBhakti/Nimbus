@@ -1,3 +1,8 @@
+import { weatherService } from './weather.js';
+import { musicPlayer } from './music.js';
+import { recipeService } from './recipes.js';
+import { movieService } from './movies.js';
+
 class WeatherMusicApp {
     constructor() {
         this.weatherElements = {
@@ -131,11 +136,9 @@ class WeatherMusicApp {
     }
 }
 
-// Initialize the app and make it globally accessible
-let weatherApp;
+// Initialize the app when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    weatherApp = new WeatherMusicApp();
-    window.weatherApp = weatherApp; // Make it globally accessible
+    window.weatherApp = new WeatherMusicApp();
 });
 
 // Add some CSS for error messages

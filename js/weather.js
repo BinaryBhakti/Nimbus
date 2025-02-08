@@ -124,5 +124,5 @@ class WeatherService {
     }
 }
 
-// Initialize weather service
-const weatherService = new WeatherService(); 
+// Export a single instance
+export const weatherService = new WeatherService(); 

@@ -422,5 +422,5 @@ class RecipeService {
     }
 }
 
-// Initialize recipe service
-const recipeService = new RecipeService(); 
+// Export a single instance
+export const recipeService = new RecipeService(); 

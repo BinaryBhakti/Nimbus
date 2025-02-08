@@ -534,5 +534,5 @@ class MovieService {
     }
 }
 
-// Initialize movie service
-const movieService = new MovieService(); 
+// Export a single instance
+export const movieService = new MovieService(); 

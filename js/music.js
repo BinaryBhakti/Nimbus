@@ -230,5 +230,5 @@ class MusicPlayer {
     }
 }
 
-// Initialize music player
-const musicPlayer = new MusicPlayer(); 
+// Export a single instance
+export const musicPlayer = new MusicPlayer(); 

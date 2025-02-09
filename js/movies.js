@@ -3,37 +3,58 @@ import config from './config.js';
 class MovieService {
     constructor() {
         this.apiKey = config.movieApiKey;
-        this.baseUrl = 'http://www.omdbapi.com/';
+        this.baseUrl = 'https://www.omdbapi.com';
+        this.currentSlideIndex = 0;
         this.weatherMovies = {
             blissful: {
                 description: 'Feel-Good, Comedy, Adventure movies for sunny days',
                 genres: ['Comedy', 'Adventure', 'Family'],
-                keywords: ['best', 'top rated', 'popular'],
-                bollywoodKeywords: ['bollywood', 'indian cinema', 'hindi']
+                defaultMovies: [
+                    'tt0910970', 'tt0338013', 'tt0118799', 'tt0045152', // Original pool
+                    'tt0107048', 'tt0119217', 'tt0381681', 'tt0756683', // Before Sunrise, Good Will Hunting, Before Sunset, Once
+                    'tt0075148', 'tt0088763', 'tt0107290', 'tt0116629', // Rocky, Back to the Future, Jurassic Park, Independence Day
+                    'tt0163651', 'tt0128853', 'tt0311289', 'tt0367594' // American Pie, Notting Hill, Love Actually, Charlie and the Chocolate Factory
+                ]
             },
             calm: {
                 description: 'Wholesome, Relaxing, Soulful movies for gentle weather',
                 genres: ['Drama', 'Romance'],
-                keywords: ['best', 'top rated', 'popular'],
-                bollywoodKeywords: ['bollywood', 'indian cinema', 'hindi']
+                defaultMovies: [
+                    'tt0118715', 'tt0211915', 'tt0756683', 'tt0109830', // Original pool
+                    'tt0112471', 'tt0100405', 'tt0108052', 'tt0120338', // Before Sunrise, Pretty Woman, Schindler's List, Titanic
+                    'tt0109686', 'tt0119217', 'tt0381681', 'tt0367089', // Blue Sky, Good Will Hunting, Before Sunset, Seabiscuit
+                    'tt0098635', 'tt0120689', 'tt0097165', 'tt0172495'  // Dead Poets Society, The Green Mile, Dead Poets Society, Gladiator
+                ]
             },
             melancholic: {
                 description: 'Emotional, Deep, Thought-Provoking movies for gloomy weather',
                 genres: ['Drama'],
-                keywords: ['best', 'top rated', 'popular'],
-                bollywoodKeywords: ['bollywood', 'indian cinema', 'hindi']
+                defaultMovies: [
+                    'tt0111161', 'tt0109830', 'tt0120689', 'tt0816692', // Original pool
+                    'tt0137523', 'tt0110357', 'tt0120382', 'tt0167404', // Fight Club, Lion King, The Truman Show, The Sixth Sense
+                    'tt0253474', 'tt0407887', 'tt0118799', 'tt0169547', // The Pianist, The Departed, Life is Beautiful, American Beauty
+                    'tt0114369', 'tt0110912', 'tt0109830', 'tt0120815'  // Se7en, Pulp Fiction, Forrest Gump, Saving Private Ryan
+                ]
             },
             intense: {
                 description: 'Thriller, Action, Dark Drama movies for dramatic weather',
                 genres: ['Thriller', 'Action'],
-                keywords: ['best', 'top rated', 'popular'],
-                bollywoodKeywords: ['bollywood', 'indian cinema', 'hindi']
+                defaultMovies: [
+                    'tt0468569', 'tt0114369', 'tt0110912', 'tt0407887', // Original pool
+                    'tt0133093', 'tt0172495', 'tt0120815', 'tt0109830', // The Matrix, Gladiator, Saving Private Ryan, Forrest Gump
+                    'tt0114814', 'tt0167260', 'tt0120737', 'tt0167261', // The Usual Suspects, LOTR trilogy
+                    'tt0088247', 'tt0082971', 'tt0078748', 'tt0103064'  // The Terminator, Raiders of the Lost Ark, Alien, Terminator 2
+                ]
             },
             dreamy: {
                 description: 'Sci-Fi, Fantasy, Art Films for magical evenings',
                 genres: ['Fantasy', 'Sci-Fi'],
-                keywords: ['best', 'top rated', 'popular'],
-                bollywoodKeywords: ['bollywood', 'indian cinema', 'hindi']
+                defaultMovies: [
+                    'tt0816692', 'tt0338013', 'tt0246578', 'tt0209144', // Original pool
+                    'tt0133093', 'tt0137523', 'tt0120737', 'tt0167261', // Matrix, Fight Club, LOTR 1&2
+                    'tt0167260', 'tt0114369', 'tt0109830', 'tt0110912', // LOTR 3, Se7en, Forrest Gump, Pulp Fiction
+                    'tt0088763', 'tt0082971', 'tt0078748', 'tt0103064'  // Back to the Future, Raiders, Alien, Terminator 2
+                ]
             }
         };
     }
@@ -43,12 +64,32 @@ class MovieService {
             const mood = this.getWeatherMood(weatherType, temperature);
             const weatherMood = this.weatherMovies[mood];
             
-            // Get movies based on genres and keywords
-            const movies = await this.fetchMoviesForMood(weatherMood);
+            // Get a random subset of movies for this session
+            const moviePool = [...weatherMood.defaultMovies];
+            const selectedMovieIds = [];
+            
+            // Select 5 random movies from the pool
+            for (let i = 0; i < 5 && moviePool.length > 0; i++) {
+                const randomIndex = Math.floor(Math.random() * moviePool.length);
+                selectedMovieIds.push(moviePool.splice(randomIndex, 1)[0]);
+            }
+            
+            // Fetch the selected movies
+            const movies = await this.getDefaultMovies(selectedMovieIds);
+            
+            if (movies.length > 0) {
+                return {
+                    featured: movies[0],
+                    suggestions: movies.slice(1),
+                    mood: mood
+                };
+            }
 
+            // Fallback to search if default movies fail
+            const searchMovies = await this.fetchMoviesForMood(weatherMood);
             return {
-                featured: movies[0],
-                suggestions: movies.slice(1),
+                featured: searchMovies[0],
+                suggestions: searchMovies.slice(1),
                 mood: mood
             };
         } catch (error) {
@@ -65,134 +106,67 @@ class MovieService {
         }
     }
 
-    async fetchMoviesForMood(weatherMood) {
-        const movies = [];
-        const searchPromises = [];
-
-        // Search for Bollywood movies with multiple keywords
-        for (const keyword of weatherMood.bollywoodKeywords) {
-            searchPromises.push(
-                this.searchMovies(`${keyword} movie 2000-2024`),
-                this.searchMovies(`${keyword} film`),
-                this.searchMovies(`best ${keyword} movies`)
-            );
-        }
-
-        // Search for Hollywood movies with multiple approaches
-        for (const genre of weatherMood.genres) {
-            searchPromises.push(
-                this.searchMovies(`best ${genre} movies 2000-2024`),
-                this.searchMovies(`top rated ${genre} films`),
-                this.searchMovies(`popular ${genre} movies`)
-            );
-        }
-
-        // Add some specific high-rated movie searches
-        searchPromises.push(
-            this.searchMovies('imdb top rated movies'),
-            this.searchMovies('oscar winning films'),
-            this.searchMovies('golden globe best picture')
-        );
-
-        // Wait for all searches to complete
-        const searchResults = await Promise.all(searchPromises);
-        
-        // Combine all results
-        searchResults.forEach(results => {
-            if (results) {
-                movies.push(...results);
-            }
-        });
-
-        // Remove duplicates and filter by rating
-        const uniqueMovies = this.removeDuplicates(movies, 'imdbID')
-            .filter(movie => {
-                const rating = parseFloat(movie.rating);
-                return !isNaN(rating) && rating >= 7.0;
-            })
-            .sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
-
-        // Separate Bollywood and Hollywood movies
-        const bollywoodMovies = uniqueMovies.filter(m => 
-            m.language && (
-                m.language.toLowerCase().includes('hindi') || 
-                m.title.toLowerCase().includes('indian') ||
-                m.language.toLowerCase().includes('tamil') ||
-                m.language.toLowerCase().includes('telugu')
-            )
-        );
-
-        const hollywoodMovies = uniqueMovies.filter(m => 
-            m.language && 
-            m.language.toLowerCase().includes('english') && 
-            !m.title.toLowerCase().includes('indian')
-        );
-
-        // Ensure we have enough movies from each category
-        let finalSelection = [];
-        
-        // Add Bollywood movies
-        if (bollywoodMovies.length > 0) {
-            finalSelection.push(...this.getRandomItems(bollywoodMovies, 5));
-        }
-        
-        // Add Hollywood movies
-        if (hollywoodMovies.length > 0) {
-            finalSelection.push(...this.getRandomItems(hollywoodMovies, 5));
-        }
-
-        // If we still don't have enough movies, add default high-rated movies
-        if (finalSelection.length < 10) {
-            const defaultMovies = [
-                {
-                    title: "3 Idiots",
-                    year: "2009",
-                    rating: "8.4",
-                    genre: "Comedy, Drama",
-                    image: "https://m.media-amazon.com/images/M/MV5BNTkyOGVjMGEtNmQzZi00NzFlLTlhOWQtODYyMDc2ZGJmYzFhXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
-                    language: "Hindi"
-                },
-                {
-                    title: "The Shawshank Redemption",
-                    year: "1994",
-                    rating: "9.3",
-                    genre: "Drama",
-                    image: "https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_SX300.jpg",
-                    language: "English"
-                },
-                {
-                    title: "Dangal",
-                    year: "2016",
-                    rating: "8.3",
-                    genre: "Action, Biography, Drama",
-                    image: "https://m.media-amazon.com/images/M/MV5BMTQ4MzQzMzM2Nl5BMl5BanBnXkFtZTgwMTQ1NzU3MDI@._V1_SX300.jpg",
-                    language: "Hindi"
-                },
-                {
-                    title: "The Dark Knight",
-                    year: "2008",
-                    rating: "9.0",
-                    genre: "Action, Crime, Drama",
-                    image: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg",
-                    language: "English"
-                }
-            ];
+    async getDefaultMovies(imdbIds) {
+        try {
+            // Fetch all selected movies
+            const moviePromises = imdbIds.map(id => this.fetchMovieDetails(id));
+            const movies = await Promise.all(moviePromises);
             
-            // Add default movies that aren't already in the selection
-            for (const movie of defaultMovies) {
-                if (finalSelection.length < 10 && !finalSelection.find(m => m.title === movie.title)) {
-                    finalSelection.push(movie);
-                }
-            }
+            // Filter out any failed fetches and add random order
+            return movies
+                .filter(movie => movie !== null)
+                .map(movie => ({
+                    ...movie,
+                    randomOrder: Math.random()
+                }))
+                .sort((a, b) => a.randomOrder - b.randomOrder);
+        } catch (error) {
+            console.error('Error fetching default movies:', error);
+            return [];
         }
+    }
 
-        return finalSelection;
+    async fetchMoviesForMood(weatherMood) {
+        try {
+            const movies = [];
+            const searchPromises = [];
+
+            // Add variety in search queries
+            const years = ['2020-2024', '2015-2019', '2010-2014', '2000-2009'];
+            const selectedYear = years[Math.floor(Math.random() * years.length)];
+
+            // Mix up the genres with search terms
+            for (const genre of weatherMood.genres) {
+                searchPromises.push(
+                    this.searchMovies(`${genre} ${selectedYear}`),
+                    this.searchMovies(`best ${genre} movies`)
+                );
+            }
+
+            const searchResults = await Promise.all(searchPromises);
+            searchResults.forEach(results => {
+                if (results) {
+                    movies.push(...results);
+                }
+            });
+
+            const uniqueMovies = this.removeDuplicates(movies, 'imdbID')
+                .filter(movie => {
+                    const rating = parseFloat(movie.rating);
+                    return !isNaN(rating) && rating >= 7.0;
+                });
+
+            return this.getRandomItems(uniqueMovies, Math.min(5, uniqueMovies.length));
+        } catch (error) {
+            console.error('Error in fetchMoviesForMood:', error);
+            return [];
+        }
     }
 
     async searchMovies(searchQuery) {
         try {
             const response = await fetch(
-                `${this.baseUrl}?apikey=${this.apiKey}&s=${encodeURIComponent(searchQuery)}&type=movie`
+                `${this.baseUrl}/?apikey=${this.apiKey}&s=${encodeURIComponent(searchQuery)}&type=movie`
             );
 
             if (!response.ok) {
@@ -201,17 +175,12 @@ class MovieService {
 
             const data = await response.json();
             if (data.Response === 'True' && data.Search) {
-                // Fetch full details for each movie
-                const detailsPromises = data.Search.slice(0, 10).map(movie => 
+                const detailsPromises = data.Search.slice(0, 5).map(movie => 
                     this.fetchMovieDetails(movie.imdbID)
                 );
                 
                 const moviesWithDetails = await Promise.all(detailsPromises);
-                return moviesWithDetails.filter(movie => {
-                    if (!movie) return false;
-                    const rating = parseFloat(movie.rating);
-                    return !isNaN(rating) && rating >= 7.0;
-                });
+                return moviesWithDetails.filter(movie => movie !== null);
             }
             return [];
         } catch (error) {
@@ -223,7 +192,7 @@ class MovieService {
     async fetchMovieDetails(imdbId) {
         try {
             const response = await fetch(
-                `${this.baseUrl}?apikey=${this.apiKey}&i=${imdbId}`
+                `${this.baseUrl}/?apikey=${this.apiKey}&i=${imdbId}`
             );
 
             if (!response.ok) return null;
@@ -241,7 +210,8 @@ class MovieService {
                     director: movie.Director,
                     actors: movie.Actors,
                     language: movie.Language,
-                    awards: movie.Awards
+                    awards: movie.Awards,
+                    timestamp: Date.now()
                 };
             }
             return null;
@@ -252,8 +222,24 @@ class MovieService {
     }
 
     getRandomItems(array, count) {
-        const shuffled = [...array].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, count);
+        // Add timestamp to ensure different order on each page load
+        const timestamp = Date.now();
+        
+        // Fisher-Yates shuffle algorithm with timestamp influence
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor((Math.random() * (i + 1) + timestamp % 13) % (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        
+        // Add randomization factors with timestamp influence
+        return shuffled.slice(0, count).map(item => ({
+            ...item,
+            timestamp,
+            random: Math.random() + (timestamp % 17) / 17,
+            shuffleIndex: Math.random() + (timestamp % 19) / 19
+        }))
+        .sort((a, b) => a.random - b.random);
     }
 
     removeDuplicates(array, key) {
@@ -535,4 +521,7 @@ class MovieService {
 }
 
 // Export a single instance
-export const movieService = new MovieService(); 
+export const movieService = new MovieService();
+
+// Make it globally accessible for arrow buttons
+window.movieService = movieService; 

@@ -423,4 +423,7 @@ class RecipeService {
 }
 
 // Export a single instance
-export const recipeService = new RecipeService(); 
+export const recipeService = new RecipeService();
+
+// Make it globally accessible for arrow buttons
+window.recipeService = recipeService; 

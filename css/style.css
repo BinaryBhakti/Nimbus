@@ -160,77 +160,58 @@ body {
 /* Music Player Card */
 .music-card {
     background: linear-gradient(135deg, var(--secondary-bg), rgba(52, 152, 219, 0.2));
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.music-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
 }
 
 .music-player {
-    padding: 1rem;
-    background: var(--card-bg);
-    border-radius: 12px;
-    margin-top: 1rem;
+    flex: 1;
+    padding: 1.2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .song-info {
     text-align: center;
-    margin-bottom: 1rem;
-}
-
-.time-info {
+    flex: 1;
     display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+.song-title {
+    font-size: 1.1rem;
     margin-bottom: 0.5rem;
-}
-
-.progress-container {
-    position: relative;
-    height: 20px;
-    cursor: pointer;
-    margin-bottom: 1rem;
-}
-
-.progress-bar {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
+    color: var(--text-primary);
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.progress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: var(--accent-color);
-    transition: width 0.1s linear;
-}
-
-.progress-handle {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 12px;
-    height: 12px;
-    background: var(--accent-color);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-    transition: transform 0.1s ease;
-}
-
-.progress-handle:hover {
-    transform: translate(-50%, -50%) scale(1.2);
+.artist-name {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .player-controls {
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
-    margin-top: 1rem;
+    gap: 2rem;
+    margin: 1rem 0;
 }
 
 .player-controls button {
@@ -238,28 +219,58 @@ body {
     border: none;
     color: var(--text-primary);
     font-size: 1.2rem;
-    padding: 0.5rem;
     cursor: pointer;
-    border-radius: 50%;
     transition: all 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 50%;
 }
 
 .player-controls button:hover {
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.1);
     transform: scale(1.1);
 }
 
-.player-controls .play-btn {
-    font-size: 1.4rem;
+.progress-container {
+    margin: 0.5rem 0;
+    position: relative;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
 }
 
-/* Active states */
-.player-controls button:active {
-    transform: scale(0.95);
+.progress-bar {
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 2px;
+    position: relative;
+    transition: width 0.1s linear;
 }
 
-.progress-container:active .progress-handle {
-    transform: translate(-50%, -50%) scale(1.3);
+.progress-handle {
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    transform: translate(0, -50%);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.progress-handle:hover {
+    transform: translate(0, -50%) scale(1.2);
+}
+
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    padding: 0 0.5rem;
 }
 
 /* Recipe Card */

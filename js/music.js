@@ -78,30 +78,177 @@ class MusicPlayer {
         const currentMood = this.currentMood;
         
         musicCard.innerHTML = `
-            <h3>Weather-Based Music (${currentMood})</h3>
-            <p class="playlist-description">${this.playlist[currentMood].description}</p>
+            <div class="music-header">
+                <h3>Weather-Based Music</h3>
+                <p class="playlist-description">${this.playlist[currentMood].description}</p>
+            </div>
             <div class="music-player">
                 <div class="song-info">
                     <p class="song-title">Playing ${currentMood} music</p>
                     <p class="artist-name">Weather-based soundtrack</p>
                 </div>
-                <div class="time-info">
-                    <span class="current-time">0:00</span>
-                    <span class="duration">0:00</span>
-                </div>
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress"></div>
-                        <div class="progress-handle"></div>
+                <div class="player-section">
+                    <div class="player-controls">
+                        <button class="prev-btn" title="Previous"><i class="fas fa-backward"></i></button>
+                        <button class="play-btn" title="Play/Pause"><i class="fas fa-play"></i></button>
+                        <button class="next-btn" title="Next"><i class="fas fa-forward"></i></button>
                     </div>
-                </div>
-                <div class="player-controls">
-                    <button class="prev-btn" title="Previous"><i class="fas fa-backward"></i></button>
-                    <button class="play-btn" title="Play/Pause"><i class="fas fa-play"></i></button>
-                    <button class="next-btn" title="Next"><i class="fas fa-forward"></i></button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                            <div class="progress-handle"></div>
+                        </div>
+                        <div class="time-info">
+                            <span class="current-time">0:00</span>
+                            <span class="duration">0:00</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
+
+        // Add styles for the new layout
+        const style = document.createElement('style');
+        style.textContent = `
+            .music-card {
+                background: linear-gradient(135deg, var(--secondary-bg), rgba(52, 152, 219, 0.2));
+                border-radius: 15px;
+                padding: 1rem;
+                position: relative;
+                overflow: hidden;
+                height: 280px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .music-header {
+                margin-bottom: 0.75rem;
+            }
+
+            .music-header h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .playlist-description {
+                font-size: 0.85rem;
+                color: var(--text-secondary);
+                line-height: 1.2;
+            }
+
+            .music-player {
+                flex: 1;
+                padding: 1rem;
+                background: rgba(0, 0, 0, 0.2);
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .song-info {
+                text-align: center;
+                margin-bottom: 0.75rem;
+            }
+
+            .song-title {
+                font-size: 1rem;
+                margin-bottom: 0.15rem;
+                color: var(--text-primary);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .artist-name {
+                font-size: 0.85rem;
+                color: var(--text-secondary);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .player-section {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                gap: 0.5rem;
+            }
+
+            .player-controls {
+                display: flex;
+                justify-content: center;
+                gap: 1.25rem;
+            }
+
+            .player-controls button {
+                background: none;
+                border: none;
+                color: var(--text-primary);
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                padding: 0.35rem;
+                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .player-controls button:hover {
+                background: rgba(255, 255, 255, 0.1);
+                transform: scale(1.1);
+            }
+
+            .progress-container {
+                padding: 0 0.25rem;
+            }
+
+            .progress-bar {
+                height: 3px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 1.5px;
+                cursor: pointer;
+                position: relative;
+                margin-bottom: 0.25rem;
+            }
+
+            .progress {
+                height: 100%;
+                background: var(--accent-color);
+                border-radius: 1.5px;
+                position: relative;
+                transition: width 0.1s linear;
+            }
+
+            .progress-handle {
+                position: absolute;
+                right: -4px;
+                top: 50%;
+                width: 8px;
+                height: 8px;
+                background: var(--accent-color);
+                border-radius: 50%;
+                transform: translate(0, -50%);
+                cursor: pointer;
+                transition: transform 0.1s ease;
+            }
+
+            .progress-handle:hover {
+                transform: translate(0, -50%) scale(1.2);
+            }
+
+            .time-info {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.7rem;
+                color: var(--text-secondary);
+                margin-top: 0.15rem;
+            }
+        `;
+        document.head.appendChild(style);
 
         this.initializeEventListeners();
     }

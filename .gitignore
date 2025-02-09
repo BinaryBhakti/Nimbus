@@ -1,8 +1,9 @@
 # API Configuration
-js/config.js
 
 # Environment variables
 .env
+.env.local
+.env.*.local
 
 # IDE files
 .vscode/

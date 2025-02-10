@@ -2,6 +2,10 @@
 
 A modern, interactive web application that provides personalized entertainment recommendations based on current weather conditions. Nimbus combines weather information with music, movies, and recipes to create an immersive experience that matches your environment.
 
+## Working Website
+
+![image](https://github.com/user-attachments/assets/946b3cff-375f-489f-ab15-c39e4f35312f)
+
 ## Features
 
 ### 🌤️ Weather Information
